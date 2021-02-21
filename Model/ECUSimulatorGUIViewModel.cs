@@ -22,7 +22,9 @@ namespace SZ2.ECUSimulatorGUI.Model
         public ReactivePropertySlim<UInt32> SetValue { get => Model.SetValue; }
         public ReactiveCommand StartCommand { get => Model.StartCommand; }
         public ReactiveCommand StopCommand { get => Model.StopCommand; }
-
+        public ReadOnlyReactivePropertySlim<double> PhysicalValue {get => Model.PhysicalValue; }
+        public ReadOnlyReactivePropertySlim<string> PhysicalUnit {get => Model.PhysicalUnit; }
+        
         public ECUSimulatorGUIViewModel(ECUSimulatorGUIModel model)
         {
             Model = model;

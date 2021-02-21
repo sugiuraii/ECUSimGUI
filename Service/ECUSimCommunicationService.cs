@@ -48,6 +48,23 @@ namespace SZ2.ECUSimulatorGUI.Service
             if(CommunicateStateChanged != null)
                 CommunicateStateChanged(this, RunningState);
         }
+        public UInt32 GetUInt32Val(OBD2ParameterCode code)
+        {
+            var obdContent = obd2ContentTable.Table[code];
+            return obdContent.MaxUInt32Val;
+        }
+
+        public double GetConvertedPhysicalVal(OBD2ParameterCode code)
+        {
+            var obdContent = obd2ContentTable.Table[code];
+            return obdContent.ConvertedPhysicalValue;
+        }
+
+        public string GetPhysicalUnit(OBD2ParameterCode code)
+        {
+            var obdContent = obd2ContentTable.Table[code];
+            return obdContent.Unit;
+        }
 
         public UInt32 GetMaxUInt32Val(OBD2ParameterCode code)
         {

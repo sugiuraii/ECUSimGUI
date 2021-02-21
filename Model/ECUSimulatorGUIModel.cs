@@ -18,6 +18,9 @@ namespace SZ2.ECUSimulatorGUI.Model
         public ReactivePropertySlim<OBD2ParameterCode> ParameterCodeToSet { get; set; }
         public ReadOnlyReactiveProperty<UInt32> MaxValue { get; set; }
         public ReactivePropertySlim<UInt32> SetValue { get; set; }
+        public ReadOnlyReactivePropertySlim<double> PhysicalValue {get; set;}
+        public ReadOnlyReactivePropertySlim<string> PhysicalUnit {get; set;}
+        
         public ReactiveCommand StartCommand { get; set; }
         public ReactiveCommand StopCommand { get; set; }
         public ECUSimulatorGUIModel(ECUSimCommunicationService serivce, ILogger<ECUSimulatorGUIModel> logger)
@@ -29,11 +32,16 @@ namespace SZ2.ECUSimulatorGUI.Model
             this.StartButtonEnabled = GetDefaultReactivePropertySlim<bool>(true, "StartButtonEnabled");
             this.StopButtonEnabled = this.StartButtonEnabled.Select(v => !v).ToReadOnlyReactivePropertySlim();
 
-            this.ParameterCodeToSet = GetDefaultReactivePropertySlim<OBD2ParameterCode>(OBD2ParameterCode.Engine_Load, "ParameterCodeToSet");
             this.MaxValue = ParameterCodeToSet.Select(code => Service.GetMaxUInt32Val(code)).ToReadOnlyReactiveProperty();
             this.SetValue = GetDefaultReactivePropertySlim<UInt32>(0, "SetValue");
             this.SetValue.Subscribe(v => Service.SetPIDValue(ParameterCodeToSet.Value, v));
 
+            this.ParameterCodeToSet = GetDefaultReactivePropertySlim<OBD2ParameterCode>(OBD2ParameterCode.Engine_Load, "ParameterCodeToSet");
+            this.ParameterCodeToSet.Subscribe(cd => SetValue.Value = Service.GetUInt32Val(cd));
+
+            this.PhysicalValue = ParameterCodeToSet.Select(code => Service.GetConvertedPhysicalVal(code)).ToReadOnlyReactivePropertySlim();
+            this.PhysicalUnit = ParameterCodeToSet.Select(code => Service.GetPhysicalUnit(code)).ToReadOnlyReactivePropertySlim();
+            
             this.StartCommand = StartButtonEnabled.ToReactiveCommand(); // Can run only on StartButtonEnabled = true;
             this.StartCommand.Subscribe(() => Service.CommunicateStart(COMPortName.Value));
             this.StopCommand = StopButtonEnabled.ToReactiveCommand(); // Can run only on StopButtonEnabled = true;

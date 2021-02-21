@@ -28,7 +28,9 @@
 <div>
     <label>Value</label>
     <input type="range" min="0" max="@ViewModel.MaxValue.Value" style="width:80%" id="valSlider" @bind="ViewModel.SetValue.Value" @bind:event="oninput" />
-    <label id="rpmLabel">@ViewModel.SetValue.Value</label>
+    <label id="vallabell">@ViewModel.SetValue.Value</label>
+    <label id="physvallabell">@ViewModel.PhysicalValue.Value</label>
+    <label id="unitlabell">@ViewModel.PhysicalUnit.Value</label>
 </div>
 
 
