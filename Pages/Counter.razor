@@ -1,24 +1,58 @@
 @page "/counter"
+@namespace ECUSimulatorGUI.Pages
 @using SZ2.ECUSimulatorGUI.Service.OBD2
+@using SZ2.ECUSimulatorGUI.Model
+@using System.ComponentModel
+@inject ECUSimulatorGUIViewModel ViewModel
+@implements IDisposable
+
 <h1>Counter</h1>
 
-<p>Current count: @currentCount</p>
+<div>
+    <label>COMPort name:</label>
+    <input type="text" id="comportNameInput" @bind-value="ViewModel.COMPortName.Value" @bind-value:event="oninput" />
+    <button class="btn btn-primary" id="btnStart" @onclick="StartCommand" disabled="@(!ViewModel.StartButtonEnabled.Value)" >Start</button>
+    <button class="btn btn-secondary" id="btnStop" @onclick="StopCommand" disabled="@(!ViewModel.StopButtonEnabled.Value)" >Stop</button>
+</div>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 <p>
-    <select @bind="@selectedcode" >
+    <select @bind="@ViewModel.ParameterCodeToSet.Value" >
         @foreach (var value in Enum.GetValues(typeof(OBD2ParameterCode)))
         {
             <option>@value</option>
         }
     </select>
 </p>
-<p>Selected code:@selectedcode</p>
+<p>Selected code:@ViewModel.ParameterCodeToSet.Value</p>
+
+<div>
+    <label>Value</label>
+    <input type="range" min="0" max="@ViewModel.MaxValue.Value" style="width:80%" id="valSlider" @bind="ViewModel.SetValue.Value" @bind:event="oninput" />
+    <label id="rpmLabel">@ViewModel.SetValue.Value</label>
+</div>
+
+
 @code {
-    private int currentCount = 0;
-    public OBD2ParameterCode selectedcode {get; set;}
-    private void IncrementCount()
+    protected override void OnInitialized()
     {
-        currentCount++;
+        base.OnInitialized();
+        ViewModel.PropertyChanged += StateChanged;
+    }
+    private void StateChanged(object s, PropertyChangedEventArgs e)
+    {
+        InvokeAsync(() => StateHasChanged());
+    }
+    
+    public void Dispose()
+    {
+        ViewModel.PropertyChanged -= StateChanged;
+    }
+    private void StartCommand()
+    {
+        ViewModel.StartCommand.Execute();
+    }
+    private void StopCommand()
+    {
+        ViewModel.StopCommand.Execute();
     }
 }
