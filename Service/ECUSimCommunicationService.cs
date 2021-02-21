@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using SZ2.ECUSimulatorGUI.Service.OBD2;
 using System.IO.Ports;
+using System.Text;
 
 namespace SZ2.ECUSimulatorGUI.Service
 {
@@ -65,14 +66,19 @@ namespace SZ2.ECUSimulatorGUI.Service
         {
             if(RunningState)
             {
-                string pidStr = pid.ToString("X2");
-                string byteLengthStr = byteLength.ToString("X2");
-                string valByteStr = "";
-                for(int i = 0; i < valByte.Length; i++)
-                    valByteStr.Concat(valByte[i].ToString("X2"));
-
-                Console.WriteLine(pidStr + byteLengthStr + valByteStr);
-                //serialPort.WriteLine(pidStr + byteLengthStr + valByteStr);
+                var strBuilder = new StringBuilder();
+                strBuilder.Append(pid.ToString("X2"));
+                strBuilder.Append(byteLength.ToString("X2"));
+                for(int i = 0; i < 4; i++)
+                {
+                    if(i < byteLength)
+                        strBuilder.Append(valByte[i].ToString("X2"));
+                    else
+                        strBuilder.Append("00");
+                }
+                var outStr = strBuilder.ToString();
+                Console.WriteLine(outStr);
+                //serialPort.WriteLine(outStr);
             }
         }
     }

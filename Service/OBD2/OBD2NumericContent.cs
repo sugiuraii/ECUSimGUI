@@ -59,13 +59,13 @@ namespace SZ2.ECUSimulatorGUI.Service.OBD2
             switch (byteLength)
             {
                 case 1:
-                    return 0xFF;
+                    return 0xFFU;
                 case 2:
-                    return 0xFFFF;
+                    return 0xFFFFU;
                 case 3:
-                    return 0xFFFFFF;
+                    return 0xFFFFFFU;
                 case 4:
-                    return 0xFFFFFFFF;
+                    return 0xFFFFFFFFU;
                 default:
                     throw new ArgumentException("Byte length needs to be 1 to 4");
             }
