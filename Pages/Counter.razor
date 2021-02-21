@@ -1,14 +1,22 @@
 @page "/counter"
-
+@using SZ2.ECUSimulatorGUI.Service.OBD2
 <h1>Counter</h1>
 
 <p>Current count: @currentCount</p>
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
-
+<p>
+    <select @bind="@selectedcode" >
+        @foreach (var value in Enum.GetValues(typeof(OBD2ParameterCode)))
+        {
+            <option>@value</option>
+        }
+    </select>
+</p>
+<p>Selected code:@selectedcode</p>
 @code {
     private int currentCount = 0;
-
+    public OBD2ParameterCode selectedcode {get; set;}
     private void IncrementCount()
     {
         currentCount++;
