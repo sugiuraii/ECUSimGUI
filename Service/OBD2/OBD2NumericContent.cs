@@ -13,6 +13,8 @@ namespace SZ2.ECUSimulatorGUI.Service.OBD2
 
         public OBD2NumericContent(byte pid, int pidByteLength, Func<double, double> conversion_function, String unit)
         {
+            if(pid % 0x20 == 0)
+                throw new ArgumentException("PIDs mutiple of 0x20 are reserved for available PID flag.");
             _pid = pid;
             _pidByteLength = pidByteLength;
             _valBytes = new byte[_pidByteLength];
