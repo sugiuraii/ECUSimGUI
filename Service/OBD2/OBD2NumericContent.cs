@@ -21,10 +21,10 @@ namespace SZ2.ECUSimulatorGUI.Service.OBD2
             _maxUInt32Val = CalcMaxUInt32Val(_pidByteLength);
         }
 
-        public byte PID { get { return _pid; } }
-        public int PIDByteLength { get { return _pidByteLength; } }
+        public byte PID { get => _pid; }
+        public int PIDByteLength { get => _pidByteLength; }
 
-        public byte[] ValueBytes { get { return _valBytes; } }
+        public byte[] ValueBytes { get => _valBytes; }
 
         public void SetValue(UInt32 value)
         {
@@ -51,8 +51,8 @@ namespace SZ2.ECUSimulatorGUI.Service.OBD2
             }
         }
 
-        public string Unit { get { return _unit; } }
-        public UInt32 MaxUInt32Val { get { return _maxUInt32Val; } }
+        public string Unit { get => _unit; }
+        public UInt32 MaxUInt32Val { get => _maxUInt32Val; }
 
         private UInt32 CalcMaxUInt32Val(int byteLength)
         {

@@ -12,10 +12,7 @@ namespace SZ2.ECUSimulatorGUI.Service.OBD2
             setNumericContentTable();
         }
 
-        public Dictionary<OBD2ParameterCode, OBD2NumericContent> Table
-        {
-            get{return _numeric_content_table;}
-        }
+        public Dictionary<OBD2ParameterCode, OBD2NumericContent> Table { get => _numeric_content_table; }
 
         private void setNumericContentTable()
         {
@@ -93,7 +90,6 @@ namespace SZ2.ECUSimulatorGUI.Service.OBD2
             _numeric_content_table.Add(OBD2ParameterCode.O2Sensor_6_Air_Fuel_Ratio, new OBD2NumericContent(0x29, 4, A => ((double)((int)A >> 16)) / 65536 * 2, "Lambda"));
             _numeric_content_table.Add(OBD2ParameterCode.O2Sensor_7_Air_Fuel_Ratio, new OBD2NumericContent(0x2A, 4, A => ((double)((int)A >> 16)) / 65536 * 2, "Lambda"));
             _numeric_content_table.Add(OBD2ParameterCode.O2Sensor_8_Air_Fuel_Ratio, new OBD2NumericContent(0x2B, 4, A => ((double)((int)A >> 16)) / 65536 * 2, "Lambda"));
-
         }
     }
 }
