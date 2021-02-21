@@ -36,7 +36,8 @@ namespace SZ2.ECUSimulatorGUI.Service
             serialPort.Open();
         */
             this.RunningState = true;
-            if(CommunicateStateChanged != null)
+            WriteAvailablePIDFlags();
+            if (CommunicateStateChanged != null)
                 CommunicateStateChanged(this, RunningState);
         }
 
@@ -45,7 +46,7 @@ namespace SZ2.ECUSimulatorGUI.Service
             //serialPort.Close();
             //serialPort.Dispose();
             this.RunningState = false;
-            if(CommunicateStateChanged != null)
+            if (CommunicateStateChanged != null)
                 CommunicateStateChanged(this, RunningState);
         }
         public UInt32 GetUInt32Val(OBD2ParameterCode code)
@@ -81,14 +82,14 @@ namespace SZ2.ECUSimulatorGUI.Service
 
         private void WritePIDValue(byte pid, byte byteLength, byte[] valByte)
         {
-            if(RunningState)
+            if (RunningState)
             {
                 var strBuilder = new StringBuilder();
                 strBuilder.Append(pid.ToString("X2"));
                 strBuilder.Append(byteLength.ToString("X2"));
-                for(int i = 0; i < 4; i++)
+                for (int i = 0; i < 4; i++)
                 {
-                    if(i < byteLength)
+                    if (i < byteLength)
                         strBuilder.Append(valByte[i].ToString("X2"));
                     else
                         strBuilder.Append("00");
@@ -96,6 +97,26 @@ namespace SZ2.ECUSimulatorGUI.Service
                 var outStr = strBuilder.ToString();
                 Console.WriteLine(outStr);
                 //serialPort.WriteLine(outStr);
+            }
+        }
+
+        private void WriteAvailablePIDFlags()
+        {
+            if (RunningState)
+            {
+                foreach (var flags in obd2ContentTable.AvailablePIDFlagMap)
+                {
+                    byte pid = flags.Key;
+                    const byte byteLength = 4;
+                    byte[] valByte = new byte[4];
+                    for (int i = 0; i < byteLength; i++)
+                    {
+                        UInt32 mask = 0xFF000000U >> (i * 8);
+                        UInt32 maskedFlags = flags.Value & mask;
+                        valByte[i] = (byte)(maskedFlags >> ((byteLength - i - 1) * 8));
+                    }
+                    WritePIDValue(pid, byteLength, valByte);
+                }
             }
         }
     }

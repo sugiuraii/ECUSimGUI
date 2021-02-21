@@ -19,7 +19,7 @@ namespace SZ2.ECUSimulatorGUI.Service.OBD2
         private void setAvailablePIDFlagByteMap()
         {
             byte maxPID = _numeric_content_table.Select(v => v.Value.PID).Max();
-            for (byte basePID = 0x00; basePID < maxPID; maxPID += 0x20)
+            for (byte basePID = 0x00; basePID < maxPID; basePID += 0x20)
             {
                 UInt32 pidFlagBytes = 0x00U; // First PID corresponds to most significant bit.
                 var targetPIDs = _numeric_content_table.Select(v => v.Value.PID).Where(pid => (pid >= basePID) && (pid < basePID + 0x20));
