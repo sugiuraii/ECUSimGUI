@@ -32,15 +32,15 @@ namespace SZ2.ECUSimulatorGUI.Model
             this.StartButtonEnabled = GetDefaultReactivePropertySlim<bool>(true, "StartButtonEnabled");
             this.StopButtonEnabled = this.StartButtonEnabled.Select(v => !v).ToReadOnlyReactivePropertySlim();
 
-            this.MaxValue = ParameterCodeToSet.Select(code => Service.GetMaxUInt32Val(code)).ToReadOnlyReactiveProperty();
+            this.ParameterCodeToSet = GetDefaultReactivePropertySlim<OBD2ParameterCode>(OBD2ParameterCode.Engine_Load, "ParameterCodeToSet");
             this.SetValue = GetDefaultReactivePropertySlim<UInt32>(0, "SetValue");
             this.SetValue.Subscribe(v => Service.SetPIDValue(ParameterCodeToSet.Value, v));
 
-            this.ParameterCodeToSet = GetDefaultReactivePropertySlim<OBD2ParameterCode>(OBD2ParameterCode.Engine_Load, "ParameterCodeToSet");
-            this.ParameterCodeToSet.Subscribe(cd => SetValue.Value = Service.GetUInt32Val(cd));
-
-            this.PhysicalValue = ParameterCodeToSet.Select(code => Service.GetConvertedPhysicalVal(code)).ToReadOnlyReactivePropertySlim();
+            this.MaxValue = ParameterCodeToSet.Select(code => Service.GetMaxUInt32Val(code)).ToReadOnlyReactiveProperty();
             this.PhysicalUnit = ParameterCodeToSet.Select(code => Service.GetPhysicalUnit(code)).ToReadOnlyReactivePropertySlim();
+            
+            this.ParameterCodeToSet.Subscribe(cd => SetValue.Value = Service.GetUInt32Val(cd));
+            this.PhysicalValue = SetValue.Select(_ => Service.GetConvertedPhysicalVal(ParameterCodeToSet.Value)).ToReadOnlyReactivePropertySlim();
             
             this.StartCommand = StartButtonEnabled.ToReactiveCommand(); // Can run only on StartButtonEnabled = true;
             this.StartCommand.Subscribe(() => Service.CommunicateStart(COMPortName.Value));

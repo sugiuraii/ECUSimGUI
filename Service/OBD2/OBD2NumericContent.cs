@@ -25,7 +25,16 @@ namespace SZ2.ECUSimulatorGUI.Service.OBD2
         public int PIDByteLength { get => _pidByteLength; }
 
         public byte[] ValueBytes { get => _valBytes; }
-
+        public UInt32 UInt32Value
+        {
+            get
+            {
+                UInt32 uint32Val = 0;
+                for(int i = 0; i < PIDByteLength; i++)
+                    uint32Val = uint32Val | (UInt32)(ValueBytes[i] << (8*i));
+                return uint32Val;
+            }
+        }
         public void SetValue(UInt32 value)
         {
             if (value > MaxUInt32Val)
@@ -33,8 +42,8 @@ namespace SZ2.ECUSimulatorGUI.Service.OBD2
 
             for (int i = 0; i < _valBytes.Length; i++)
             {
-                int maskOffset = i * 4;
-                UInt32 mask = (UInt32)0b1111 << maskOffset;
+                int maskOffset = i * 8;
+                UInt32 mask = 0xFFU << maskOffset;
                 _valBytes[i] = (byte)((value & mask) >> maskOffset);
             }
         }
@@ -45,7 +54,7 @@ namespace SZ2.ECUSimulatorGUI.Service.OBD2
             {
                 UInt32 intVal = 0;
                 for (int i = 0; i < _pidByteLength; i++)
-                    intVal = intVal | (UInt32)_valBytes[i] << i;
+                    intVal = intVal | ((UInt32)_valBytes[i] << 8*i);
 
                 return _conversion_function((double)intVal);
             }

@@ -51,7 +51,7 @@ namespace SZ2.ECUSimulatorGUI.Service
         public UInt32 GetUInt32Val(OBD2ParameterCode code)
         {
             var obdContent = obd2ContentTable.Table[code];
-            return obdContent.MaxUInt32Val;
+            return obdContent.UInt32Value;
         }
 
         public double GetConvertedPhysicalVal(OBD2ParameterCode code)
