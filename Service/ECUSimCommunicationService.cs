@@ -4,50 +4,96 @@ using System.Linq;
 using SZ2.ECUSimulatorGUI.Service.OBD2;
 using System.IO.Ports;
 using System.Text;
+using Microsoft.Extensions.Logging;
+using System.IO;
 
 namespace SZ2.ECUSimulatorGUI.Service
 {
     public class ECUSimCommunicationService : IDisposable
     {
+        private readonly ILogger<ECUSimCommunicationService> logger; 
         public event EventHandler<bool> CommunicateStateChanged;
         public event EventHandler<Exception> CommunicateErrorOccured;
         private readonly OBD2ContentTable obd2ContentTable = new OBD2ContentTable();
         private bool RunningState = false;
-        //private SerialPort serialPort;
+        private SerialPort serialPort;
 
-        public ECUSimCommunicationService()
+        public ECUSimCommunicationService(ILogger<ECUSimCommunicationService> logger)
         {
+            this.logger = logger;
         }
 
         public void Dispose()
         {
             CommunicateStop();
-            /*
-            serialPort.Close();
-            serialPort.Dispose();
-            */
         }
 
         public void CommunicateStart(string portName)
-        {/*
-            serialPort = new SerialPort(portName);
-            serialPort.BaudRate = 115200;
-            serialPort.NewLine = "\n";
-            serialPort.Open();
-        */
-            this.RunningState = true;
-            WriteAvailablePIDFlags();
-            if (CommunicateStateChanged != null)
-                CommunicateStateChanged(this, RunningState);
+        {
+            try
+            {
+                logger.LogInformation("Serial port open.");
+                logger.LogInformation("Portname : " + portName);
+                serialPort = new SerialPort(portName);
+                serialPort.BaudRate = 115200;
+                serialPort.NewLine = "\n";
+                serialPort.Open();
+                logger.LogInformation("BaudRate is " + serialPort.BaudRate.ToString());
+
+                WaitReceivingECUSimReady();
+
+                // Enable SerialPort input logging
+                serialPort.DataReceived += (sender, e) => {
+                    var port = (SerialPort)sender;
+                    string message = port.ReadExisting();
+                    if(message.Contains("error", StringComparison.OrdinalIgnoreCase))
+                        logger.LogWarning("Error message from ECUSim : " + message);
+                    else
+                        logger.LogDebug("Message from ECUSim : " + message);
+                };
+
+                logger.LogInformation("Write available PID flags.");
+                WriteAvailablePIDFlags();
+                logger.LogInformation("ECUSimulator communication started.");
+                this.RunningState = true;
+                if (CommunicateStateChanged != null)
+                    CommunicateStateChanged(this, RunningState);
+
+            }
+            catch(Exception ex) when ((ex is IOException) || (ex is ECUSimulatorException))
+            {
+                logger.LogError(ex.Message);
+                CommunicateErrorOccured(this, ex);
+            }
+        }
+
+        private void WaitReceivingECUSimReady()
+        {
+            logger.LogInformation("Waiting CAN BUS Shield init ok message....");
+            while(true)
+            {
+                string response = serialPort.ReadLine();
+                if(response.Contains("CAN BUS Shield init ok!"))
+                {
+                    logger.LogInformation("CAN BUS Shield init ok message is received.");
+                    break;
+                }
+                if(response.Contains("error", StringComparison.OrdinalIgnoreCase) || response.Contains("fail", StringComparison.OrdinalIgnoreCase))
+                {
+                    throw new ECUSimulatorException("CAN BUS Shield initialization is failed. Response is :" + response); 
+                }
+            }
         }
 
         public void CommunicateStop()
         {
-            //serialPort.Close();
-            //serialPort.Dispose();
+            logger.LogInformation("Serial port closing.");
+            serialPort.Close();
+            serialPort.Dispose();
             this.RunningState = false;
             if (CommunicateStateChanged != null)
                 CommunicateStateChanged(this, RunningState);
+            logger.LogInformation("Serial port closed.");
         }
         public UInt32 GetUInt32Val(OBD2ParameterCode code)
         {
@@ -95,8 +141,8 @@ namespace SZ2.ECUSimulatorGUI.Service
                         strBuilder.Append("00");
                 }
                 var outStr = strBuilder.ToString();
-                Console.WriteLine(outStr);
-                //serialPort.WriteLine(outStr);
+                logger.LogDebug("Write serial message: " + outStr);
+                serialPort.WriteLine(outStr);
             }
         }
 

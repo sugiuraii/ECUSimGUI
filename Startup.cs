@@ -52,7 +52,7 @@ namespace ECUSimulatorGUI
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
