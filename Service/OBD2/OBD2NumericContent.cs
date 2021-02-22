@@ -33,7 +33,10 @@ namespace SZ2.ECUSimulatorGUI.Service.OBD2
             {
                 UInt32 uint32Val = 0;
                 for(int i = 0; i < PIDByteLength; i++)
-                    uint32Val = uint32Val | (UInt32)(ValueBytes[i] << (8*i));
+                {
+                    int bitShift = 8*(PIDByteLength - i - 1);
+                    uint32Val = uint32Val | (UInt32)(_valBytes[i] << bitShift);
+                }
                 return uint32Val;
             }
         }
@@ -46,20 +49,16 @@ namespace SZ2.ECUSimulatorGUI.Service.OBD2
             {
                 int maskOffset = i * 8;
                 UInt32 mask = 0xFFU << maskOffset;
+                int byteIndexToSet = _valBytes.Length - i;
                 _valBytes[i] = (byte)((value & mask) >> maskOffset);
             }
+            // Reverse byte order
+            Array.Reverse(_valBytes);
         }
 
         public double ConvertedPhysicalValue
         {
-            get
-            {
-                UInt32 intVal = 0;
-                for (int i = 0; i < _pidByteLength; i++)
-                    intVal = intVal | ((UInt32)_valBytes[i] << 8*i);
-
-                return _conversion_function((double)intVal);
-            }
+            get => _conversion_function((double)this.UInt32Value);
         }
 
         public string Unit { get => _unit; }
