@@ -60,7 +60,7 @@ namespace SZ2.ECUSimulatorGUI.Service
                     CommunicateStateChanged(this, RunningState);
 
             }
-            catch(Exception ex) when ((ex is IOException) || (ex is ECUSimulatorException))
+            catch(Exception ex) when ((ex is IOException) || (ex is ECUSimulatorException) || (ex is UnauthorizedAccessException))
             {
                 logger.LogError(ex.Message);
                 CommunicateErrorOccured(this, ex);
