@@ -4,6 +4,7 @@
 @using SZ2.ECUSimulatorGUI.Model
 @using System.ComponentModel
 @inject ECUSimulatorGUIViewModel ViewModel
+@inject IJSRuntime JsRuntime;
 @implements IDisposable
 
 <h1>Counter</h1>
@@ -39,12 +40,17 @@
     {
         base.OnInitialized();
         ViewModel.PropertyChanged += StateChanged;
+        ViewModel.CommunicateErrorOccured += CommunicationErrorOccured; 
     }
     private void StateChanged(object s, PropertyChangedEventArgs e)
     {
         InvokeAsync(() => StateHasChanged());
     }
-    
+    private void CommunicationErrorOccured(object s, Exception e)
+    {
+        JsRuntime.InvokeAsync<bool>("alert", e.Message);
+    }
+
     public void Dispose()
     {
         ViewModel.PropertyChanged -= StateChanged;

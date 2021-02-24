@@ -14,6 +14,12 @@ namespace SZ2.ECUSimulatorGUI.Model
             remove => Model.PropertyChanged -= value;
         }
 
+        public event EventHandler<Exception> CommunicateErrorOccured
+        {
+            add => Model.CommunicateErrorOccured += value;
+            remove => Model.CommunicateErrorOccured += value;
+        }
+
         public ReactivePropertySlim<string> COMPortName { get => Model.COMPortName; }
         public ReactivePropertySlim<bool> StartButtonEnabled { get => Model.StartButtonEnabled; }
         public ReadOnlyReactivePropertySlim<bool> StopButtonEnabled { get => Model.StopButtonEnabled; }

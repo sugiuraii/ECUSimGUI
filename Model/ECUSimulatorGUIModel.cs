@@ -12,6 +12,7 @@ namespace SZ2.ECUSimulatorGUI.Model
     {
         private readonly ILogger logger;
         private readonly ECUSimCommunicationService Service;
+        public event EventHandler<Exception> CommunicateErrorOccured;
         public ReactivePropertySlim<string> COMPortName { get; set; }
         public ReactivePropertySlim<bool> StartButtonEnabled { get; set; }
         public ReadOnlyReactivePropertySlim<bool> StopButtonEnabled { get; set; }
@@ -48,7 +49,7 @@ namespace SZ2.ECUSimulatorGUI.Model
             this.StopCommand.Subscribe(() => Service.CommunicateStop());
 
             Service.CommunicateStateChanged += (sender, arg) => StartButtonEnabled.Value = !arg;
-            Service.CommunicateErrorOccured += (sender, arg) => this.logger.LogError(arg.Message);
+            Service.CommunicateErrorOccured += (sender, arg) => this.CommunicateErrorOccured(sender, arg);
         }
 
         public void Dispose()
