@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SZ2.ECUSimulatorGUI.Service;
 using SZ2.ECUSimulatorGUI.Model;
+using ElectronNET.API;
+using ElectronNET.API.Entities;
 
 namespace ECUSimulatorGUI
 {
@@ -34,6 +36,19 @@ namespace ECUSimulatorGUI
             services.AddTransient<ECUSimulatorGUIViewModel>();
         }
 
+        public async void ElectronBootstrap()
+        {
+            var browserWindow = await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions
+            {
+                Width = 1152,
+                Height = 940,
+                Show = false
+            });
+            await browserWindow.WebContents.Session.ClearCacheAsync();
+            browserWindow.OnReadyToShow += () => browserWindow.Show();
+            browserWindow.SetTitle("DefiLinkEmulator");
+        }
+        
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -58,6 +73,11 @@ namespace ECUSimulatorGUI
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
+
+            if (HybridSupport.IsElectronActive)
+            {
+                ElectronBootstrap();
+            }
         }
     }
 }
