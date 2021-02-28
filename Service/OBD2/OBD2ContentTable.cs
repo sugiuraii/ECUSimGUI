@@ -11,30 +11,10 @@ namespace SZ2.ECUSimulatorGUI.Service.OBD2
         public OBD2ContentTable()
         {
             setNumericContentTable();
-            setAvailablePIDFlagByteMap();
         }
 
         public Dictionary<OBD2ParameterCode, OBD2NumericContent> Table { get => _numeric_content_table; }
-        public Dictionary<byte, UInt32> AvailablePIDFlagMap { get => _availablePIDFlagMap; }
-        private void setAvailablePIDFlagByteMap()
-        {
-            byte maxPID = _numeric_content_table.Select(v => v.Value.PID).Max();
-            for (byte basePID = 0x00; basePID < maxPID; basePID += 0x20)
-            {
-                UInt32 pidFlagBytes = 0x00U; // First PID corresponds to most significant bit.
-                var targetPIDs = _numeric_content_table.Select(v => v.Value.PID).Where(pid => (pid >= basePID) && (pid < basePID + 0x20));
-
-                foreach(byte targetPID in targetPIDs)
-                {
-                    int targetPIDIndex = targetPID - basePID;
-                    pidFlagBytes |= 0x01U << (0x20 - targetPIDIndex);
-                }
-
-                if(basePID + 0x20 < maxPID)
-                    pidFlagBytes |= 0x01U;
-                _availablePIDFlagMap.Add(basePID, pidFlagBytes);
-            }
-        }
+        
         private void setNumericContentTable()
         {
             _numeric_content_table.Add(OBD2ParameterCode.Engine_Load, new OBD2NumericContent(0x04, 1, A => A * 100 / 255, "%"));

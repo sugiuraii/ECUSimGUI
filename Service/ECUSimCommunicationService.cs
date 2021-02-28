@@ -52,8 +52,6 @@ namespace SZ2.ECUSimulatorGUI.Service
                         logger.LogDebug("Message from ECUSim : " + message);
                 };
 
-                logger.LogInformation("Write available PID flags.");
-                WriteAvailablePIDFlags();
                 logger.LogInformation("ECUSimulator communication started.");
                 this.RunningState = true;
                 if (CommunicateStateChanged != null)
@@ -132,7 +130,6 @@ namespace SZ2.ECUSimulatorGUI.Service
             {
                 var strBuilder = new StringBuilder();
                 strBuilder.Append(pid.ToString("X2"));
-                strBuilder.Append(byteLength.ToString("X2"));
                 for (int i = 0; i < 4; i++)
                 {
                     if (i < byteLength)
@@ -143,26 +140,6 @@ namespace SZ2.ECUSimulatorGUI.Service
                 var outStr = strBuilder.ToString();
                 logger.LogDebug("Write serial message: " + outStr);
                 serialPort.WriteLine(outStr);
-            }
-        }
-
-        private void WriteAvailablePIDFlags()
-        {
-            if (RunningState)
-            {
-                foreach (var flags in obd2ContentTable.AvailablePIDFlagMap)
-                {
-                    byte pid = flags.Key;
-                    const byte byteLength = 4;
-                    byte[] valByte = new byte[4];
-                    for (int i = 0; i < byteLength; i++)
-                    {
-                        UInt32 mask = 0xFF000000U >> (i * 8);
-                        UInt32 maskedFlags = flags.Value & mask;
-                        valByte[i] = (byte)(maskedFlags >> ((byteLength - i - 1) * 8));
-                    }
-                    WritePIDValue(pid, byteLength, valByte);
-                }
             }
         }
     }
