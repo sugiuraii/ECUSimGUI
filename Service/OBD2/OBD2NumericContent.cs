@@ -7,11 +7,11 @@ namespace SZ2.ECUSimulatorGUI.Service.OBD2
         private readonly byte[] _valBytes;
         private readonly byte _pid;
         private readonly int _pidByteLength;
-        private Func<double, double> _conversion_function;
+        private Func<UInt32, double> _conversion_function;
         private readonly string _unit;
         private readonly UInt32 _maxUInt32Val;
 
-        public OBD2NumericContent(byte pid, int pidByteLength, Func<double, double> conversion_function, String unit)
+        public OBD2NumericContent(byte pid, int pidByteLength, Func<UInt32, double> conversion_function, String unit)
         {
             if(pid % 0x20 == 0)
                 throw new ArgumentException("PIDs mutiple of 0x20 are reserved for available PID flag.");
@@ -58,7 +58,7 @@ namespace SZ2.ECUSimulatorGUI.Service.OBD2
 
         public double ConvertedPhysicalValue
         {
-            get => _conversion_function((double)this.UInt32Value);
+            get => _conversion_function(UInt32Value);
         }
 
         public string Unit { get => _unit; }
