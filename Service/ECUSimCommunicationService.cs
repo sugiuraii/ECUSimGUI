@@ -86,8 +86,11 @@ namespace SZ2.ECUSimulatorGUI.Service
         public void CommunicateStop()
         {
             logger.LogInformation("Serial port closing.");
-            serialPort.Close();
-            serialPort.Dispose();
+            if(serialPort != null)
+            {
+                serialPort.Close();
+                serialPort.Dispose();
+            }
             this.RunningState = false;
             if (CommunicateStateChanged != null)
                 CommunicateStateChanged(this, RunningState);
