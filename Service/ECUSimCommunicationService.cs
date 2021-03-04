@@ -93,11 +93,6 @@ namespace SZ2.ECUSimulatorGUI.Service
                 CommunicateStateChanged(this, RunningState);
             logger.LogInformation("Serial port closed.");
         }
-        public UInt32 GetUInt32Val(OBD2ParameterCode code)
-        {
-            var obdContent = obd2ContentTable.Table[code];
-            return obdContent.UInt32Value;
-        }
 
         public double GetConvertedPhysicalVal(OBD2ParameterCode code)
         {
@@ -111,12 +106,19 @@ namespace SZ2.ECUSimulatorGUI.Service
             return obdContent.Unit;
         }
 
-        public UInt32 GetMaxUInt32Val(OBD2ParameterCode code)
+        public int GetPIDByteLength(OBD2ParameterCode code)
         {
             var obdContent = obd2ContentTable.Table[code];
-            return obdContent.MaxUInt32Val;
+            return obdContent.ByteLength;
         }
-        public void SetPIDValue(OBD2ParameterCode code, UInt32 value)
+
+        public byte[] GetPIDValue(OBD2ParameterCode code)
+        {
+            var obdContent = obd2ContentTable.Table[code];
+            return obdContent.ValueBytes;
+        }
+
+        public void SetPIDValue(OBD2ParameterCode code, byte[] value)
         {
             var obdContent = obd2ContentTable.Table[code];
             obdContent.SetValue(value);

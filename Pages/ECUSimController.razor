@@ -32,6 +32,11 @@
     <label id="vallabell">@ViewModel.SetValue.Value</label>
     <label id="physvallabell">@ViewModel.PhysicalValue.Value.ToString("F2")</label>
     <label id="unitlabell">@ViewModel.PhysicalUnit.Value</label>
+
+    <input type="range" min="0" max="255" style="width:80%" id="valSlider2" @bind="ViewModel.SetValueLSB8.Value" @bind:event="oninput" />
+    <label id="vallabell2">@ViewModel.SetValueLSB8.Value</label>
+
+
 </div>
 
 
