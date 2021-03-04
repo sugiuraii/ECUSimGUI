@@ -28,15 +28,10 @@
 
 <div>
     <label>Value</label>
-    <input type="range" min="0" max="@ViewModel.MaxValue.Value" style="width:80%" id="valSlider" @bind="ViewModel.SetValue.Value" @bind:event="oninput" />
-    <label id="vallabell">@ViewModel.SetValue.Value</label>
+    <input type="range" min="0" max="@ViewModel.MaxUInt32Value.Value" style="width:80%" @bind="ViewModel.UInt32SetValue.Value" @bind:event="oninput" />
+    <label id="vallabell">@ViewModel.UInt32SetValue.Value</label>
     <label id="physvallabell">@ViewModel.PhysicalValue.Value.ToString("F2")</label>
     <label id="unitlabell">@ViewModel.PhysicalUnit.Value</label>
-
-    <input type="range" min="0" max="255" style="width:80%" id="valSlider2" @bind="ViewModel.SetValueLSB8.Value" @bind:event="oninput" />
-    <label id="vallabell2">@ViewModel.SetValueLSB8.Value</label>
-
-
 </div>
 
 

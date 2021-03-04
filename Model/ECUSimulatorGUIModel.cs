@@ -34,7 +34,7 @@ namespace SZ2.ECUSimulatorGUI.Model
             this.StopButtonEnabled = this.StartButtonEnabled.Select(v => !v).ToReadOnlyReactivePropertySlim();
 
             this.ParameterCodeToSet = GetDefaultReactivePropertySlim<OBD2ParameterCode>(OBD2ParameterCode.Engine_Load, "ParameterCodeToSet");
-            this.SetValue = GetDefaultReactivePropertySlim<byte[]>(new byte[]{0,0,0,0}, "SetValue");
+            this.SetValue = GetDefaultReactivePropertySlim<byte[]>(new byte[]{0}, "SetValue");
             this.SetValue.Subscribe(v => Service.SetPIDValue(ParameterCodeToSet.Value, v));
 
             this.ValueByteLength = ParameterCodeToSet.Select(code => Service.GetPIDByteLength(code)).ToReadOnlyReactivePropertySlim();
