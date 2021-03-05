@@ -32,6 +32,12 @@
     <label id="vallabell">@ViewModel.UInt32SetValue.Value</label>
     <label id="physvallabell">@ViewModel.PhysicalValue.Value.ToString("F2")</label>
     <label id="unitlabell">@ViewModel.PhysicalUnit.Value</label>
+
+    @for (int i = 0; i < ViewModel.SetValue.Value.Length; i++)
+    {
+        int localI = i;
+        <input type="range" min="0" max="255" style="width:80%" value="@ViewModel.SetValue.Value[localI]" @oninput="v => SetByteValue(localI, Convert.ToByte(v.Value))" />
+    }
 </div>
 
 
@@ -42,6 +48,15 @@
         ViewModel.PropertyChanged += StateChanged;
         ViewModel.CommunicateErrorOccured += CommunicationErrorOccured; 
     }
+    private void SetByteValue(int byteIndex, byte byteToSet)
+    {
+        byte[] newByte = new byte[ViewModel.SetValue.Value.Length];
+        for(int i = 0; i < newByte.Length; i++)
+            newByte[i] = (i == byteIndex)?byteToSet:ViewModel.SetValue.Value[i];
+        
+        ViewModel.SetValue.Value = newByte;
+    }
+
     private void StateChanged(object s, PropertyChangedEventArgs e)
     {
         InvokeAsync(() => StateHasChanged());
