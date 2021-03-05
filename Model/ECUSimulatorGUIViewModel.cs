@@ -30,8 +30,6 @@ namespace SZ2.ECUSimulatorGUI.Model
         public ReactivePropertySlim<UInt32> UInt32SetValue { get; private set; }
         public ReactivePropertySlim<byte[]> SetValue { get => Model.SetValue; }
         public ReadOnlyReactivePropertySlim<bool[]> SetValueByteEnabledFlag { get; private set; }
-        //public ReactivePropertySlim<UInt16[]> UInt16SetValue { get; private set; }
-        //public ReadOnlyReactivePropertySlim<bool[]> SetValueUInt16EnabledFlag { get; private set; }
 
         public ReadOnlyReactivePropertySlim<int> ValueByteLength { get => Model.ValueByteLength; }
         public ReactiveCommand StartCommand { get => Model.StartCommand; }
@@ -65,22 +63,23 @@ namespace SZ2.ECUSimulatorGUI.Model
                                                                                return bytes;
                                                                            });
             SetValueByteEnabledFlag = ValueByteLength.Select(v => new bool[] { v >= 1, v >= 2, v >= 3, v >= 4 }).ToReadOnlyReactivePropertySlim();
-            //UInt16SetValue = SetValue.ToReactivePropertySlimAsSynchronized(p => p.Value,
-            //                                                               v => new UInt16[] { (ushort)((uint)v[0] << 8 | (uint)v[1]), (ushort)((uint)v[2] << 8 | (uint)v[3]) },
-            //                                                               v => new byte[] { (byte)(v[0] & 0xFF00 >> 8), (byte)(v[0] & 0x00FF), (byte)(v[1] & 0xFF00 >> 8), (byte)(v[1] & 0x00FF) });
-            //SetValueUInt16EnabledFlag = ValueByteLength.Select(v => new bool[] { v >= 2, v >= 4 }).ToReadOnlyReactivePropertySlim();
         }
 
-        private UInt32 MaxValFromByteLength(int byteLength) => ~((0xFFFFFFFFU << (byteLength * 8)));
+        private UInt32 MaxValFromByteLength(int byteLength) => byteLength switch
+        {
+            1 => 0x000000FF,
+            2 => 0x0000FFFF,
+            3 => 0x00FFFFFF,
+            4 => 0xFFFFFFFF,
+            _ => throw new ArgumentException("byte length needs to be betwee 1 to 4.")
+        };
 
         public void Dispose()
         {
             MaxUInt32Value.Dispose();
             UInt32SetValue.Dispose();
             SetValueByteEnabledFlag.Dispose();
-            //UInt16SetValue.Dispose();
             SetValueByteEnabledFlag.Dispose();
-            //SetValueUInt16EnabledFlag.Dispose();
         }
     }
 }

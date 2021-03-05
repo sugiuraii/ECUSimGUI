@@ -36,7 +36,8 @@
     @for (int i = 0; i < ViewModel.SetValue.Value.Length; i++)
     {
         int localI = i;
-        <input type="range" min="0" max="255" style="width:80%" value="@ViewModel.SetValue.Value[localI]" @oninput="v => SetByteValue(localI, Convert.ToByte(v.Value))" />
+        <input type="range" min="0" max="255" style="width:20%" value="@ViewModel.SetValue.Value[localI]" @oninput="v => SetByteValue(localI, Convert.ToByte(v.Value))" />
+        <label >@ViewModel.SetValue.Value[localI].ToString("X2")</label>
     }
 </div>
 
