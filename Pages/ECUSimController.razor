@@ -10,6 +10,7 @@
 <h1>ECUSimulatorGUI</h1>
 
 <div>
+    <h2>Startup</h2>
     <label>COMPort name:</label>
     <input type="text" id="comportNameInput" @bind-value="ViewModel.COMPortName.Value" @bind-value:event="oninput" />
     <button class="btn btn-primary" id="btnStart" @onclick="StartCommand" disabled="@(!ViewModel.StartButtonEnabled.Value)" >Start</button>
@@ -17,27 +18,40 @@
 </div>
 
 <p>
+    <h2>PID select</h2>
     <select @bind="@ViewModel.ParameterCodeToSet.Value" >
         @foreach (var value in Enum.GetValues(typeof(OBD2ParameterCode)))
         {
             <option>@value</option>
         }
     </select>
+    <p>Selected code:@ViewModel.ParameterCodeToSet.Value</p>
 </p>
-<p>Selected code:@ViewModel.ParameterCodeToSet.Value</p>
 
 <div>
-    <label>Value</label>
-    <input type="range" min="0" max="@ViewModel.MaxUInt32Value.Value" style="width:80%" @bind="ViewModel.UInt32SetValue.Value" @bind:event="oninput" />
-    <label id="vallabell">@ViewModel.UInt32SetValue.Value</label>
-    <label id="physvallabell">@ViewModel.PhysicalValue.Value.ToString("F2")</label>
-    <label id="unitlabell">@ViewModel.PhysicalUnit.Value</label>
-
+    <h2>Set value</h2>
+    <p>
+        <label>Value</label>
+        <input type="range" min="0" max="@ViewModel.MaxUInt32Value.Value" style="width:80%" @bind="ViewModel.UInt32SetValue.Value" @bind:event="oninput" />
+    </p>
+    <p>
+       <label>Integer value : </label>
+        <label id="vallabell">@ViewModel.UInt32SetValue.Value</label>
+    </p>
+    <p>
+        <label>Physical value:</label>
+        <label id="physvallabell">@ViewModel.PhysicalValue.Value.ToString("F2")</label>
+        <label id="unitlabell">@ViewModel.PhysicalUnit.Value</label>
+    </p>
+    <h2>Set bytes</h2>
     @for (int i = 0; i < ViewModel.SetValue.Value.Length; i++)
     {
         int localI = i;
-        <input type="range" min="0" max="255" style="width:20%" value="@ViewModel.SetValue.Value[localI]" @oninput="v => SetByteValue(localI, Convert.ToByte(v.Value))" />
-        <label >@ViewModel.SetValue.Value[localI].ToString("X2")</label>
+        <p>
+            <label>Byte : @localI</label>
+            <input type="range" min="0" max="255" style="width:80%" value="@ViewModel.SetValue.Value[localI]" @oninput="v => SetByteValue(localI, Convert.ToByte(v.Value))" />
+            <label >@ViewModel.SetValue.Value[localI].ToString("X2")</label>
+        </p>
     }
 </div>
 
