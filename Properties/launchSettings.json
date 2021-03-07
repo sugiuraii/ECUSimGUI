@@ -22,7 +22,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "ECUSimulatorGUI": {
+    "ECUSimGUI": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SZ2.ECUSimulatorGUI.Service.OBD2;
+using SZ2.ECUSimGUI.Service.OBD2;
 using System.IO.Ports;
 using System.Text;
 using Microsoft.Extensions.Logging;
 using System.IO;
 
-namespace SZ2.ECUSimulatorGUI.Service
+namespace SZ2.ECUSimGUI.Service
 {
     public class ECUSimCommunicationService : IDisposable
     {
@@ -52,13 +52,13 @@ namespace SZ2.ECUSimulatorGUI.Service
                         logger.LogDebug("Message from ECUSim : " + message);
                 };
 
-                logger.LogInformation("ECUSimulator communication started.");
+                logger.LogInformation("ECUSim communication started.");
                 this.RunningState = true;
                 if (CommunicateStateChanged != null)
                     CommunicateStateChanged(this, RunningState);
 
             }
-            catch(Exception ex) when ((ex is IOException) || (ex is ECUSimulatorException) || (ex is UnauthorizedAccessException))
+            catch(Exception ex) when ((ex is IOException) || (ex is ECUSimException) || (ex is UnauthorizedAccessException))
             {
                 logger.LogError(ex.Message);
                 CommunicateErrorOccured(this, ex);
@@ -78,7 +78,7 @@ namespace SZ2.ECUSimulatorGUI.Service
                 }
                 if(response.Contains("error", StringComparison.OrdinalIgnoreCase) || response.Contains("fail", StringComparison.OrdinalIgnoreCase))
                 {
-                    throw new ECUSimulatorException("CAN BUS Shield initialization is failed. Response is :" + response); 
+                    throw new ECUSimException("CAN BUS Shield initialization is failed. Response is :" + response); 
                 }
             }
         }

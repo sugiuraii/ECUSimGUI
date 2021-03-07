@@ -1,14 +1,14 @@
 using System;
 using System.ComponentModel;
 using Microsoft.Extensions.Logging;
-using SZ2.ECUSimulatorGUI.Service;
+using SZ2.ECUSimGUI.Service;
 using Reactive.Bindings;
 using System.Reactive.Linq;
-using SZ2.ECUSimulatorGUI.Service.OBD2;
+using SZ2.ECUSimGUI.Service.OBD2;
 
-namespace SZ2.ECUSimulatorGUI.Model
+namespace SZ2.ECUSimGUI.Model
 {
-    public class ECUSimulatorGUIModel : ReactivePropertyBlazorModelBase, IDisposable
+    public class ECUSimGUIModel : ReactivePropertyBlazorModelBase, IDisposable
     {
         private readonly ILogger logger;
         private readonly ECUSimCommunicationService Service;
@@ -24,7 +24,7 @@ namespace SZ2.ECUSimulatorGUI.Model
         
         public ReactiveCommand StartCommand { get; private set; }
         public ReactiveCommand StopCommand { get; private set; }
-        public ECUSimulatorGUIModel(ECUSimCommunicationService serivce, ILogger<ECUSimulatorGUIModel> logger)
+        public ECUSimGUIModel(ECUSimCommunicationService serivce, ILogger<ECUSimGUIModel> logger)
         {
             this.logger = logger;
             this.Service = serivce;

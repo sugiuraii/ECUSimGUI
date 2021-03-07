@@ -2,14 +2,14 @@ using System;
 using System.ComponentModel;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
-using SZ2.ECUSimulatorGUI.Service.OBD2;
+using SZ2.ECUSimGUI.Service.OBD2;
 using System.Reactive.Linq;
 
-namespace SZ2.ECUSimulatorGUI.Model
+namespace SZ2.ECUSimGUI.Model
 {
-    public class ECUSimulatorGUIViewModel : INotifyPropertyChanged, IDisposable
+    public class ECUSimGUIViewModel : INotifyPropertyChanged, IDisposable
     {
-        private readonly ECUSimulatorGUIModel Model;
+        private readonly ECUSimGUIModel Model;
         public event PropertyChangedEventHandler PropertyChanged
         {
             add => Model.PropertyChanged += value;
@@ -37,7 +37,7 @@ namespace SZ2.ECUSimulatorGUI.Model
         public ReadOnlyReactivePropertySlim<double> PhysicalValue { get => Model.PhysicalValue; }
         public ReadOnlyReactivePropertySlim<string> PhysicalUnit { get => Model.PhysicalUnit; }
 
-        public ECUSimulatorGUIViewModel(ECUSimulatorGUIModel model)
+        public ECUSimGUIViewModel(ECUSimGUIModel model)
         {
             Model = model;
             MaxUInt32Value = ValueByteLength.Select(v => MaxValFromByteLength(v)).ToReadOnlyReactivePropertySlim();
