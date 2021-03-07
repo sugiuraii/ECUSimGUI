@@ -3,7 +3,7 @@ using System;
 using System.Reactive.Linq;
 using System.ComponentModel;
 
-namespace SZ2.ECUSimulatorGUI.Model
+namespace SZ2.ECUSimGUI.Model
 {
     public class ReactivePropertyBlazorModelBase : INotifyPropertyChanged
     {
