@@ -1,15 +1,15 @@
 {
-  "executable": "ECUSimulatorGUI",
+  "executable": "ECUSimGUI",
   "splashscreen": {
     "imageFile": ""
   },
-  "name": "ECUSimulatorGUI",
+  "name": "ECUSimGUI",
   "author": "",
   "singleInstance": false,
   "environment": "Production",
   "build": {
-    "appId": "com.ECUSimulatorGUI.app",
-    "productName": "ECUSimulatorGUI",
+    "appId": "com.ECUSimGUI.app",
+    "productName": "ECUSimGUI",
     "copyright": "Copyright © 2020",
     "buildVersion": "1.0.0",
     "compression": "maximum",

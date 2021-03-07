@@ -1,5 +1,5 @@
 ﻿
-namespace SZ2.ECUSimulatorGUI.Service.OBD2
+namespace SZ2.ECUSimGUI.Service.OBD2
 {
     public enum OBD2ParameterCode
     {

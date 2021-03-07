@@ -9,12 +9,12 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SZ2.ECUSimulatorGUI.Service;
-using SZ2.ECUSimulatorGUI.Model;
+using SZ2.ECUSimGUI.Service;
+using SZ2.ECUSimGUI.Model;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
 
-namespace ECUSimulatorGUI
+namespace ECUSimGUI
 {
     public class Startup
     {
@@ -32,8 +32,8 @@ namespace ECUSimulatorGUI
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<ECUSimCommunicationService>();
-            services.AddSingleton<ECUSimulatorGUIModel>();
-            services.AddTransient<ECUSimulatorGUIViewModel>();
+            services.AddSingleton<ECUSimGUIModel>();
+            services.AddTransient<ECUSimGUIViewModel>();
         }
 
         public async void ElectronBootstrap()
@@ -46,7 +46,7 @@ namespace ECUSimulatorGUI
             });
             await browserWindow.WebContents.Session.ClearCacheAsync();
             browserWindow.OnReadyToShow += () => browserWindow.Show();
-            browserWindow.SetTitle("DefiLinkEmulator");
+            browserWindow.SetTitle("ECUSimGUI");
         }
         
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
