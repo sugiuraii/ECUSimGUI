@@ -1,0 +1,96 @@
+@page "/ecusimcontroller"
+@namespace ECUSimulatorGUI.Pages
+@using SZ2.ECUSimulatorGUI.Service.OBD2
+@using SZ2.ECUSimulatorGUI.Model
+@using System.ComponentModel
+@inject ECUSimulatorGUIViewModel ViewModel
+@inject IJSRuntime JsRuntime;
+@implements IDisposable
+
+<h1>ECUSimulatorGUI</h1>
+
+<div>
+    <h2>Startup</h2>
+    <label>COMPort name:</label>
+    <input type="text" id="comportNameInput" @bind-value="ViewModel.COMPortName.Value" @bind-value:event="oninput" />
+    <button class="btn btn-primary" id="btnStart" @onclick="StartCommand" disabled="@(!ViewModel.StartButtonEnabled.Value)" >Start</button>
+    <button class="btn btn-secondary" id="btnStop" @onclick="StopCommand" disabled="@(!ViewModel.StopButtonEnabled.Value)" >Stop</button>
+</div>
+
+<p>
+    <h2>PID select</h2>
+    <select @bind="@ViewModel.ParameterCodeToSet.Value" >
+        @foreach (var value in Enum.GetValues(typeof(OBD2ParameterCode)))
+        {
+            <option>@value</option>
+        }
+    </select>
+    <p>Selected code:@ViewModel.ParameterCodeToSet.Value</p>
+</p>
+
+<div>
+    <h2>Set value</h2>
+    <p>
+        <label>Value</label>
+        <input type="range" min="0" max="@ViewModel.MaxUInt32Value.Value" style="width:80%" @bind="ViewModel.UInt32SetValue.Value" @bind:event="oninput" />
+    </p>
+    <p>
+       <label>Integer value : </label>
+        <label id="vallabell">@ViewModel.UInt32SetValue.Value</label>
+    </p>
+    <p>
+        <label>Physical value:</label>
+        <label id="physvallabell">@ViewModel.PhysicalValue.Value.ToString("F2")</label>
+        <label id="unitlabell">@ViewModel.PhysicalUnit.Value</label>
+    </p>
+    <h2>Set bytes</h2>
+    @for (int i = 0; i < ViewModel.SetValue.Value.Length; i++)
+    {
+        int localI = i;
+        <p>
+            <label>Byte : @localI</label>
+            <input type="range" min="0" max="255" style="width:80%" value="@ViewModel.SetValue.Value[localI]" @oninput="v => SetByteValue(localI, Convert.ToByte(v.Value))" />
+            <label >@ViewModel.SetValue.Value[localI].ToString("X2")</label>
+        </p>
+    }
+</div>
+
+
+@code {
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        ViewModel.PropertyChanged += StateChanged;
+        ViewModel.CommunicateErrorOccured += CommunicationErrorOccured; 
+    }
+    private void SetByteValue(int byteIndex, byte byteToSet)
+    {
+        byte[] newByte = new byte[ViewModel.SetValue.Value.Length];
+        for(int i = 0; i < newByte.Length; i++)
+            newByte[i] = (i == byteIndex)?byteToSet:ViewModel.SetValue.Value[i];
+        
+        ViewModel.SetValue.Value = newByte;
+    }
+
+    private void StateChanged(object s, PropertyChangedEventArgs e)
+    {
+        InvokeAsync(() => StateHasChanged());
+    }
+    private void CommunicationErrorOccured(object s, Exception e)
+    {
+        JsRuntime.InvokeAsync<bool>("alert", e.Message);
+    }
+
+    public void Dispose()
+    {
+        ViewModel.PropertyChanged -= StateChanged;
+    }
+    private void StartCommand()
+    {
+        ViewModel.StartCommand.Execute();
+    }
+    private void StopCommand()
+    {
+        ViewModel.StopCommand.Execute();
+    }
+}
