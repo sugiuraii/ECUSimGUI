@@ -58,7 +58,7 @@ namespace SZ2.ECUSimGUI.Service
                     CommunicateStateChanged(this, RunningState);
 
             }
-            catch(Exception ex) when ((ex is IOException) || (ex is ECUSimException) || (ex is UnauthorizedAccessException))
+            catch(Exception ex) when ((ex is IOException) || (ex is ECUSimException) || (ex is UnauthorizedAccessException) || (ex is ArgumentException) || (ex is InvalidOperationException))
             {
                 logger.LogError(ex.Message);
                 CommunicateErrorOccured(this, ex);
