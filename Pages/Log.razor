@@ -1,0 +1,12 @@
+@page "/log"
+@namespace ECUSimGUI.Pages
+@using Logging.Memory
+
+<h1>ECUSimGUI Log</h1>
+
+<p>
+        @foreach (var line in MemoryLogger.LogList)
+        {
+            @line<br>
+        }
+</p>
