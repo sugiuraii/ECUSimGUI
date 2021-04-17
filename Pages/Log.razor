@@ -5,8 +5,12 @@
 <h1>ECUSimGUI Log</h1>
 
 <p>
-        @foreach (var line in MemoryLogger.LogList)
-        {
-            @line<br>
-        }
+    <code>
+        <pre>
+            @foreach (var line in MemoryLogger.LogList)
+            {
+                @(line+"\n")
+            }            
+        </pre>
+    </code>
 </p>
