@@ -11,6 +11,7 @@ GUI frontend of [ECUSim, Arduino CAN ECU simulator](https://github.com/sugiuraii
   - [.NET 5 SDK](https://dotnet.microsoft.com/download), ASP.NET core, Blazor server.
   - [Electron.NET](https://github.com/ElectronNET/Electron.NET)
   - [runceel/ReactiveProperty](https://github.com/runceel/ReactiveProperty)
+  - [iflight/Logging.Memory](https://github.com/iflight/Logging.Memory)
 
 # Build and run the program
  - Install [.NET 5 SDK](https://dotnet.microsoft.com/download) and [node.js with npm](https://nodejs.org/).
