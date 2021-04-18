@@ -4,6 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="ElectronNET.API" Version="11.5.1" />
+    <PackageReference Include="Logging.Memory" Version="3.1.0" />
     <PackageReference Include="ReactiveProperty" Version="7.7.1" />
     <PackageReference Include="System.IO.Ports" Version="5.0.0" />
   </ItemGroup>
