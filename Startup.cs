@@ -35,6 +35,7 @@ namespace ECUSimGUI
             services.AddSingleton<ECUSimCommunicationService>();
             services.AddSingleton<ECUSimGUIModel>();
             services.AddTransient<ECUSimGUIViewModel>();
+            services.AddTransient<MemoryLoggerModel>();
         }
 
         public async void ElectronBootstrap()
@@ -63,8 +64,8 @@ namespace ECUSimGUI
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
-            loggerFactory.AddMemory();
+        
+            loggerFactory.AddMemory(LogLevel.Debug);
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
