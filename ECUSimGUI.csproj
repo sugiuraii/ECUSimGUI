@@ -2,6 +2,10 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
+    <Target Name="Create bundles" BeforeTargets="BeforeBuild">
+    <Exec Command="npm install" WorkingDirectory="npmjs" />
+    <Exec Command="npm run build" WorkingDirectory="npmjs"/>
+  </Target>  
   <ItemGroup>
     <PackageReference Include="ElectronNET.API" Version="11.5.1" />
     <PackageReference Include="Logging.Memory" Version="3.1.0" />

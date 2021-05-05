@@ -1,0 +1,25 @@
+{
+  "name": "ecusimgui",
+  "version": "1.0.0",
+  "description": "GUI for ECUSim",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --progress --profile",
+    "production": "webpack --progress --profile --mode production"
+  },
+  "author": "",
+  "license": "apache",
+  "devDependencies": {
+    "webpack": "^5.36.2",
+    "webpack-cli": "^4.6.0"
+  },
+  "dependencies": {
+    "bootstrap": "^4.6.0",
+    "css-loader": "^5.2.4",
+    "file-loader": "^6.2.0",
+    "jquery": "^3.6.0",
+    "open-iconic": "^1.1.1",
+    "popper.js": "^1.16.1",
+    "style-loader": "^2.0.0"
+  }
+}
