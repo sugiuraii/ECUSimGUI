@@ -23,8 +23,16 @@ app.whenReady().then(async () => {
   console.log("Start server process by listening url of :"+ mainAddr);
   
   const appPath = app.getAppPath();
-  const subpr= require('child_process').spawn('./ECUSimGUI',['--urls' , mainAddr], {cwd: path.join(appPath, "server-bin")});
+  const subpr = require('child_process').spawn('./ECUSimGUI',['--urls' , mainAddr], {cwd: path.join(appPath, "server-bin")});
   const axios = require('axios'); 
+
+  // Setup stdout/stdderr redirection.
+  subpr.stdout.on('data', (data) => {
+    console.log(`Stdout from subprocess: ${data}`);
+  });
+  subpr.stderr.on('data', (data) => {
+    console.log(`Stderr from subprocess: ${data}`);
+  });
 
   app.on('before-quit', () => {
     subpr.kill('SIGINT');
