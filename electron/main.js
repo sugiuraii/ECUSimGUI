@@ -21,7 +21,9 @@ app.whenReady().then(async () => {
   const freeport = await ffp.findFreePorts(1,{endPort : 6000, startPort : 5020});
   const mainAddr = 'http://localhost:'+ freeport + "/";
   console.log("Start server process by listening url of :"+ mainAddr);
-  const subpr= require('child_process').spawn('./ECUSimGUI',['--urls' , mainAddr], {cwd: "./server-bin"});
+  
+  const appPath = app.getAppPath();
+  const subpr= require('child_process').spawn('./ECUSimGUI',['--urls' , mainAddr], {cwd: path.join(appPath, "server-bin")});
   const axios = require('axios'); 
 
   app.on('before-quit', () => {
