@@ -1,7 +1,7 @@
 {
-  "name": "electrontest",
-  "version": "1.0.0",
-  "description": "",
+  "name": "ecusimgui",
+  "version": "0.4.0",
+  "description": "Electron GUI frontend for ECUSim.",
   "main": "main.js",
   "scripts": {
     "start": "electron-forge start",
@@ -9,7 +9,7 @@
     "make": "electron-forge make"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@electron-forge/cli": "^6.0.4",
     "@electron-forge/maker-deb": "^6.0.4",
