@@ -2,7 +2,7 @@
 This directory contains sources to build ECUSimGUI app as desktop app, by using electron.
 
 # Before running this.
-Before running this, please build backend asp.net binary (root of this project), and copy binarise to `server-bin`.
+Before running this, please build backend asp.net binary (root of this project), and copy backend binary files to `server-bin`.
 
 ```
 cd ECUSimGUI
