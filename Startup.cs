@@ -67,7 +67,7 @@ namespace ECUSimGUI
         
             loggerFactory.AddMemory(LogLevel.Debug);
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             
             app.UseRouting();
