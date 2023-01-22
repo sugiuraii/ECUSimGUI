@@ -23,12 +23,10 @@ GUI frontend of [ECUSim, Arduino CAN ECU simulator](https://github.com/sugiuraii
 ## Build and bundle with electron
 * Before building electron executabls, please copy backend binary files to `server-bin`.
   ```
-  cd ECUSimGUI
-  dotnet publish
   cd electron
   mkdir server-bin
   cd server-bin
-  cp -r ../bin/Debug/net6.0/publish/* ./
+  cp -r ../../bin/Debug/net6.0/publish/* ./
   ```
 * After that, return to `electron` directory, setup npm and build.
   ```
