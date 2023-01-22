@@ -7,14 +7,8 @@
     <Exec Command="npm run build" WorkingDirectory="npmjs"/>
   </Target>  
   <ItemGroup>
-    <PackageReference Include="ElectronNET.API" Version="11.5.1" />
     <PackageReference Include="Logging.Memory" Version="3.1.0" />
     <PackageReference Include="ReactiveProperty" Version="7.7.1" />
     <PackageReference Include="System.IO.Ports" Version="6.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Update="electron.manifest.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
 </Project>
