@@ -12,8 +12,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SZ2.ECUSimGUI.Service;
 using SZ2.ECUSimGUI.Model;
-using ElectronNET.API;
-using ElectronNET.API.Entities;
 
 namespace ECUSimGUI
 {
@@ -37,19 +35,6 @@ namespace ECUSimGUI
             services.AddTransient<ECUSimGUIViewModel>();
             services.AddTransient<MemoryLoggerModel>();
         }
-
-        public async void ElectronBootstrap()
-        {
-            var browserWindow = await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions
-            {
-                Width = 1152,
-                Height = 940,
-                Show = false
-            });
-            await browserWindow.WebContents.Session.ClearCacheAsync();
-            browserWindow.OnReadyToShow += () => browserWindow.Show();
-            browserWindow.SetTitle("ECUSimGUI");
-        }
         
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
@@ -67,7 +52,7 @@ namespace ECUSimGUI
         
             loggerFactory.AddMemory(LogLevel.Debug);
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             
             app.UseRouting();
@@ -77,11 +62,6 @@ namespace ECUSimGUI
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
-
-            if (HybridSupport.IsElectronActive)
-            {
-                ElectronBootstrap();
-            }
         }
     }
 }
