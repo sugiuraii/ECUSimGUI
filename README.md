@@ -12,7 +12,16 @@ GUI frontend of [ECUSim, Arduino CAN ECU simulator](https://github.com/sugiuraii
   - [runceel/ReactiveProperty](https://github.com/runceel/ReactiveProperty)
   - [iflight/Logging.Memory](https://github.com/iflight/Logging.Memory)
 
-# Build and run the program
+# How to use
+## Write sketch to Arduino uno.
+- Download (clone) Arduino sketch from [ECUSim](https://github.com/sugiuraii/ECUSim) and write to Arduino Uno board.
+- Wire Arduino Uno board, MCP2515 CAN board following the instruction of ECUSim page.
+
+## Download pre-built binary.
+- Download binary archive from [Release](https://github.com/sugiuraii/ECUSimGUI/releases) page.
+- After extracting the archive, run `./ecusimgui` (or `ecusimgui.exe`).
+
+# How to build
 ## Install build tools.
 * Install [.NET 6 SDK](https://dotnet.microsoft.com/download) and [node.js with npm](https://nodejs.org/).
 ## Build backend
