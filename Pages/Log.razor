@@ -1,16 +1,33 @@
 @page "/log"
+@using Microsoft.Extensions.Logging
+@using SZ2.ECUSimGUI.Model
 @namespace ECUSimGUI.Pages
-@using Logging.Memory
+@inject MemoryLoggerModel mlogModel
 
 <h1>ECUSimGUI Log</h1>
 
 <p>
-    <code>
-        <pre>
-            @foreach (var line in MemoryLogger.LogList)
-            {
-                @(line+"\n")
-            }            
-        </pre>
-    </code>
+    @foreach (var log in mlogModel.GetTimeLevelAndLog(LogLevelToGet))
+    {
+        <div class="card @GetClassFromLogLevel(log.level) mb-2">
+            <div class="card-header">@log.time</div>
+            <div class="card-body">
+                @log.line
+            </div>
+        </div>
+    }            
 </p>
+
+@code
+{
+    private readonly List<LogLevel> LogLevelToGet = new List<LogLevel>(){LogLevel.Debug, LogLevel.Information, LogLevel.Warning, LogLevel.Error, LogLevel.Critical};
+
+    private string GetClassFromLogLevel(LogLevel level) => level switch
+    {
+        LogLevel.Information => "border-success",
+        LogLevel.Warning => "bg-warning text-white",
+        LogLevel.Error => "bg-danger text-white",
+        LogLevel.Critical => "bg-dark text-danger",
+        _ => "border-primary"
+    };
+}

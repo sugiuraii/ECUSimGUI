@@ -12,8 +12,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SZ2.ECUSimGUI.Service;
 using SZ2.ECUSimGUI.Model;
-using ElectronNET.API;
-using ElectronNET.API.Entities;
 
 namespace ECUSimGUI
 {
@@ -35,19 +33,7 @@ namespace ECUSimGUI
             services.AddSingleton<ECUSimCommunicationService>();
             services.AddSingleton<ECUSimGUIModel>();
             services.AddTransient<ECUSimGUIViewModel>();
-        }
-
-        public async void ElectronBootstrap()
-        {
-            var browserWindow = await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions
-            {
-                Width = 1152,
-                Height = 940,
-                Show = false
-            });
-            await browserWindow.WebContents.Session.ClearCacheAsync();
-            browserWindow.OnReadyToShow += () => browserWindow.Show();
-            browserWindow.SetTitle("ECUSimGUI");
+            services.AddTransient<MemoryLoggerModel>();
         }
         
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,10 +49,10 @@ namespace ECUSimGUI
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+        
+            loggerFactory.AddMemory(LogLevel.Debug);
 
-            loggerFactory.AddMemory();
-
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseStaticFiles();
             
             app.UseRouting();
@@ -76,11 +62,6 @@ namespace ECUSimGUI
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
-
-            if (HybridSupport.IsElectronActive)
-            {
-                ElectronBootstrap();
-            }
         }
     }
 }
