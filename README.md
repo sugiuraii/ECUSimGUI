@@ -8,7 +8,7 @@ GUI frontend of [ECUSim, Arduino CAN ECU simulator](https://github.com/sugiuraii
  - MCP2515 CAN controller board.
 
 # Dependencies
-  - [.NET 6 SDK](https://dotnet.microsoft.com/download), ASP.NET core, Blazor server.
+  - [.NET 8 SDK](https://dotnet.microsoft.com/download), ASP.NET core, Blazor server.
   - [runceel/ReactiveProperty](https://github.com/runceel/ReactiveProperty)
   - [iflight/Logging.Memory](https://github.com/iflight/Logging.Memory)
 
@@ -23,7 +23,7 @@ GUI frontend of [ECUSim, Arduino CAN ECU simulator](https://github.com/sugiuraii
 
 # How to build
 ## Install build tools.
-* Install [.NET 6 SDK](https://dotnet.microsoft.com/download) and [node.js with npm](https://nodejs.org/).
+* Install [.NET 8 SDK](https://dotnet.microsoft.com/download) and [node.js with npm](https://nodejs.org/).
 ## Build backend
 * Build(publish) dotnet (asp.net) background.
   ```
@@ -34,15 +34,14 @@ GUI frontend of [ECUSim, Arduino CAN ECU simulator](https://github.com/sugiuraii
   ```
   cd electron
   mkdir server-bin
-  cd server-bin
-  cp -r ../../bin/Debug/net6.0/publish/* ./
+  cp -r ../bin/Release/net8.0/publish/* ./server-bin/
   ```
-* After that, return to `electron` directory, setup npm and build.
+* After that, setup npm and build.
   ```
-  cd ECUSimGUI/electron
   npm i
   npm run package
   ```
+* You will find eletron build on `out` folder.
 * It might be better to run the program via CLI, since the logs and errors are output on console.
 
 # License
