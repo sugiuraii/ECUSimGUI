@@ -34,15 +34,14 @@ GUI frontend of [ECUSim, Arduino CAN ECU simulator](https://github.com/sugiuraii
   ```
   cd electron
   mkdir server-bin
-  cd server-bin
-  cp -r ../../bin/Release/net8.0/publish/* ./
+  cp -r ../bin/Release/net8.0/publish/* ./server-bin/
   ```
-* After that, return to `electron` directory, setup npm and build.
+* After that, setup npm and build.
   ```
-  cd ECUSimGUI/electron
   npm i
   npm run package
   ```
+* You will find eletron build on `out` folder.
 * It might be better to run the program via CLI, since the logs and errors are output on console.
 
 # License
