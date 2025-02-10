@@ -1,6 +1,6 @@
 {
   "name": "ecusimgui",
-  "version": "1.0.0",
+  "version": "0.41",
   "description": "GUI for ECUSim",
   "main": "index.js",
   "scripts": {
@@ -10,16 +10,16 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "webpack": "^5.36.2",
-    "webpack-cli": "^4.6.0"
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1"
   },
   "dependencies": {
-    "bootstrap": "^4.6.0",
-    "css-loader": "^5.2.4",
+    "bootstrap": "^5.3.3",
+    "css-loader": "^7.1.2",
     "file-loader": "^6.2.0",
-    "jquery": "^3.6.0",
+    "jquery": "^3.7.1",
     "open-iconic": "^1.1.1",
     "popper.js": "^1.16.1",
-    "style-loader": "^2.0.0"
+    "style-loader": "^4.0.0"
   }
 }
